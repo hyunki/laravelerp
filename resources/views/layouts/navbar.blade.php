@@ -20,11 +20,18 @@
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
                 <li><a href="{{ url('/employee') }}">사원정보</a></li>
-                <li><a href="{{ url('/bond') }}">지급보증</a></li>
+                
                 <li class="dropdown">
                     <a href="{{ url('/contract') }}">계약<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="{{ url('/contract') }}">계약목록</a></li>
+                        <li><a href="{{ url('/bond') }}">지급보증</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="{{ url('/asset') }}">자산<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ url('/asset') }}">자산목록</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -33,6 +40,20 @@
                         <li><a href="{{ url('/insurance') }}">보험목록</a></li>
                     </ul>
                 </li>
+                <li class="dropdown">
+                    <a href="{{ url('/policy') }}">규정<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url('/policy/hrm') }}">인사규정</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="{{ url('/information') }}">정보<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url('/information') }}">정보</a></li>
+                    </ul>
+                </li>
+
+
             </ul>
       
             <!-- Right Side Of Navbar -->

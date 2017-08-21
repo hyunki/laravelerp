@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Contract as Contract;
-use App\ContractAddendum as ContractAddendum;
+use App\ContractsAddendum as ContractsAddendum;
+use App\Bond as Bond;
 use Session;
 use DB;
 use App\Http\Helpers\Helper as Helper;
@@ -19,11 +20,6 @@ class ContractController extends Controller
     // 랜딩페이지 계약목록을 보여준다.
     public function index(Request $request)
     {
-        if($request->keyword!='')
-        {
-            dd($request);
-            $data['contracts'] = DB::table('contracts')->where('name','LIKE',$request->keyword)->orderBy('date','desc')->orderBy('id','desc')->paginate(15);
-        }
         // $data['contracts'] = DB::table('contracts')->orderBy('date','desc')->orderBy('id','desc')->paginate(15);
         $data['contracts'] = Helper::contractList();
         $data['sum_cur'] =
@@ -37,6 +33,8 @@ class ContractController extends Controller
                         ->where('cur1', 'USD')
                         ->groupBy('cur1')->get());
 
+        $data['count_bond'] = count(Bond::where('contract_id',$data['contracts'])->get());
+
 	return view('contract.list', $data);               
     
     }
@@ -46,6 +44,14 @@ class ContractController extends Controller
     {
         $data['contract'] = Contract::find($id);
 
+        $data['addendums'] = ContractsAddendum::where('contract_id','=',$id)->get();
+
+        $data['bonds'] = Bond::where('contract_id',$id)
+                                ->orderBy('IssuingDate','ASC')
+                                ->orderBy('Type','ASC')
+                                ->get();
+
+        $data['countries'] = \App\Country::select(DB::raw('concat(alpha3," | ", nameKor) as userselect, id'))->orderBy('userselect')->lists('userselect', 'id');
         return view('contract.show')->with($data);
     }
     
@@ -80,12 +86,26 @@ class ContractController extends Controller
 
         $contract->date = $request->date;
         if (!$request->completionDate) {
-            $contract->completionDate = null;
+            $contract->completionDate = NULL;
         }else
         {$contract->completionDate = $request->completionDate;}
         
-        $contract->DeliveryDate_EP = (!$request->DeliveryDate_EP) ? null : $request->DeliveryDate_EP;
-        $contract->DeliveryDate_C = $request->DeliveryDate_C;
+    
+        if ($request->DeliveryDate_EP = '0000-00-00' OR '') {
+            $contract->DeliveryDate_EP = null;
+        }else
+        {
+            $contract->DeliveryDate_EP = $request->DeliveryDate_EP;
+        }
+        
+    
+        if ($request->DeliveryDate_EP = '0000-00-00' OR '') {
+            $contract->DeliveryDate_EP = null;
+        }else
+        {
+            $contract->DeliveryDate_C = $request->DeliveryDate_C;
+        }
+
         $contract->cur1 = $request->cur1;
 
         $contract->TotalAmount = $request->TotalAmount;
@@ -151,15 +171,51 @@ class ContractController extends Controller
         $contract->C = $request->C;
 
         $contract->date = $request->date;
-        $contract->completionDate = $request->completionDate;
-        $contract->DeliveryDate_EP = $request->DeliveryDate_EP;
-        $contract->DeliveryDate_C = $request->DeliveryDate_C;
+
+        if ($request->completionDate == '') {
+            $contract->completionDate =  null;
+        } else {
+            $contract->completionDate = $request->completionDate;
+        }
+
+        if ($request->DeliveryDate_EP == '') {
+            $contract->DeliveryDate_EP = null;
+        }else
+        {
+            $contract->DeliveryDate_EP = $request->DeliveryDate_EP;
+        }
+        
+        if ($request->DeliveryDate_C == '') {
+            $contract->DeliveryDate_C = null;
+        }else
+        {
+            $contract->DeliveryDate_C = $request->DeliveryDate_C;
+        }
+
         $contract->cur1 = $request->cur1;
-        $contract->TotalAmount = $request->TotalAmount;
+        if ($request->TotalAmount == '') {
+            $contract->cAmount = null;
+        }else
+        {
+            $contract->TotalAmount = $request->TotalAmount;
+        }
+
         $contract->cur2 = $request->cur2;
-        $contract->epAmount = $request->epAmount;
+        if ($request->epAmount == '') {
+            $contract->cAmount = null;
+        }else
+        {
+            $contract->epAmount = $request->epAmount;
+        }
+
         $contract->cur3 = $request->cur3;
-        $contract->cAmount = $request->cAmount;
+        if ($request->cAmount == '') {
+            $contract->cAmount = null;
+        }else
+        {
+            $contract->cAmount = $request->cAmount;
+        }
+        
         $contract->contractor = $request->contractor;
         $contract->owner = $request->owner;
         $contract->pic = $request->pic;
@@ -195,13 +251,7 @@ class ContractController extends Controller
 
         return redirect()->route('contract.list');
     }
-    
-    public function post_revised(Request $request, $id)
-    {
-        $revised = new ContractAddendum;
-        $revised->date = $request->date;
-        return view('contract.addendum');
-    }
+
 
 
 

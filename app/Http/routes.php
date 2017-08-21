@@ -20,40 +20,45 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => 'web'], function () {
 	Route::auth();
+	
 	Route::get('/logout',function(){
-    Auth::logout();
+    	Auth::logout();
     	return redirect('/');
 	});
-	Route::get('/', 'HomeController@index');
+
+	Route::get('/', function(){
+		return view('welcome');
+	});
 
 // Contract Route
 	Route::resource('contract', 'ContractController');
-// work on progress
-	Route::get('/contract_revised/', function() {
-	    return view('contract.revised');
-	});
-	Route::post('/contract_revised', [
-	    'as' => 'api.revised',
-	    'uses' => 'ContractController@revised_list'
-	]);
-
 	Route::get('/search', [
 	    'as' => 'api.search',
 	    'uses' => 'ContractController@search'
 	]);
 
-// Bond Route
+// Contract addendum route
+	Route::resource('contractaddendum', 'ContractAddendumController');
 
+// Bond Route
 	Route::resource('bond', 'BondController');
 
 // Insurance Route
 	Route::resource('insurance', 'InsuranceController');
+
 	Route::resource('employee', 'EmployeeController');
+
 	Route::resource('contractor','ContractorController');
+
 	Route::resource('profile', 'ProfileController');
+
 	Route::resource('code', 'CodeController');
+
 	Route::resource('license', 'LicenseController');
+	
 	Route::resource('asset', 'AssetController');
+
+	Route::resource('information', 'InformationController');
 
 
 	Route::group(['prefix' => 'employeejoin'], function()
@@ -78,4 +83,18 @@ Route::group(['middleware' => 'web'], function () {
 	});
 
 
-});
+
+	Route::group(['prefix' => 'policy'], function() {
+    	Route::get('/',[
+			'as' => 'policy', function(){
+				return view('policy.hrm');
+		}]);
+
+		Route::get('/hrm',[
+			'as' => 'policy', function(){
+				return view('policy.hrm');
+		}]);
+	});
+
+
+});//end of groupware web

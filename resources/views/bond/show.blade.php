@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('title', 'test')
 @section('content')
 
 <div class="col-md-8 col-md-offset-2 ">
@@ -6,16 +7,9 @@
 @include('partials._messages')
 
     <div class="col-md-3">
-        <div class="col-md-5">
-            <a href="{{route('bond.index')}}" class="btn btn-default">목록</a>
-        </div>
-        <div class="col-md-7">
-            <a class="btn btn-alert" href="{{ route('bond.edit' , $bond->id ) }}">
-                Edit</a>
-            
-            <a class="btn btn-danger" href="{{ route('bond.destroy', $bond->id ) }}">
-                Delete</span></a>
-        </div>
+            <a href="{{route('bond.index')}}" class="btn btn-default btn-block">목록</a>
+            <a href="{{ route('bond.edit' , $bond->id ) }}" class="btn btn-info btn-block" >Edit</a>
+            <a href="{{ route('bond.destroy', $bond->id ) }}" class="btn btn-danger btn-block" >Delete</span></a>
         
         <table class="table">
             <tr>
@@ -26,7 +20,6 @@
                 <th>수정일</th>
                 <td>{{$bond->updated_at }} </td>
             </tr>
-
         </table>
     </div>
     <div class="col-md-9">
@@ -35,11 +28,13 @@
             @if ( App\Contract::where('id', $bond->contract_id)->get() == '[]' )
                 {{ '' }}
             @else
-                {{ App\Contract::where('id', $bond->contract_id)->get()['0']['name'] }}
+                
+                <a href="{{ route('contract.show', ['id' => $bond->contract_id]) }}">
+                    {!! App\Contract::where('id', $bond->contract_id)->get()['0']['name'] !!}
+                </a>
             @endif
         </h3>
-        <hr>
-        <div class="form-group">
+    <div class="form-group">
         <table class="table">
             <tr>
                 <th>발행자 </th>
@@ -81,7 +76,7 @@
                 <th>보증서 발행일</th>
                 <td> 
                     @if(!is_null($bond->IssuingDate))
-                    {{ $bond->IssuingDate->format('Y-m-d') }}
+                        {{ $bond->IssuingDate->format('Y-m-d') }}
                     @endif
                 </td>
             </tr>
@@ -94,7 +89,7 @@
                     @if(!is_null($bond->EndingDate))
                             {{ $bond->EndingDate->format('Y-m-d') }}
                     @endif
-                        ({{ $bond->EndingDate->diffInDays($bond->StartingDate) }}일간) 
+                        ({{ $bond->EndingDate->diffInDays($bond->StartingDate) }} 일간) 
                 </td>
                 
             </tr>
@@ -102,7 +97,10 @@
             <tr>
                 <th>보증금액</th>
                 <td>
-                    {{ App\Currency::where('id',$bond->BondCurrency)->get()['0']['code']}}
+                    @if (!isset(App\Currency::where('id',$bond->BondCurrency)->get()['0']['code']))
+                    @else
+                    {{ App\Currency::where('id',$bond->BondCurrency)->get()['0']['code'] }}
+                    @endif
                     {{ number_format($bond->Amount,2) }}
                 </td>
 
@@ -110,26 +108,28 @@
             <tr>
                 <th>보증수수료</th>
                 <td>
-                    {{ $bond->curr2['code'] }}
+                    @if (!isset(App\Currency::where('id',$bond->FeeCurrency)->get()['0']['code']))
+                    @else
+                    {{ App\Currency::where('id',$bond->FeeCurrency)->get()['0']['code'] }}
+                    @endif
                     {{ number_format($bond->Fee,2) }}
                 </td>
             </tr>
             
             <tr>
-                <th>보증서 회수일</th>
-                <td>
-                    @if(!is_null($bond->EndingDate))
-                        {{ $bond->EndingDate->format('Y-m-d') }}
-                    @endif
-                </td>
+                <th>회수</th>
+                 <td>   @if($bond->Validity == 1)
+                            <span class="glyphicon glyphicon-ok" title="{{ $bond->RetrievalDate }}"></span>
+                        @endif 
+                        @if(is_null($bond->RetrievalDate))
+                        @else
+                            <span> 회수일:</span>
+                            {{ $bond->RetrievalDate->format('Y-m-d') }}
+                        @endif
+                </td> 
             </tr>
             
-            <tr>
-                <th>회수</th>
-                 <td>  @if($bond->Validity == 1)
-                            <span class="glyphicon glyphicon-ok" title="{{ $bond->RetrievalDate }}"></span>
-                            @endif</td> {{ $bond->Validity }}
-            </tr>
+          
             <tr>
                 <th>상태</th>
                 <td>
@@ -137,8 +137,8 @@
                 </td>
             </tr>
             <tr>
-                <th>Memo</th>
-                <td>{{$bond->Memo }} </td>
+                <th >Memo</th>
+                <td class="list-group-item-text">{!! $bond->memo !!} </td>
             </tr>
             
             <tr>
@@ -148,6 +148,7 @@
         </table>
     </div>
 </div>
+{{-- 본드 수정내역 --}}
 
 
 @endsection

@@ -1,20 +1,14 @@
 <!-- app/views/contract/contract.blade.php -->
 @extends('layouts.main')
+@section('title','공사계약서 목록')
 @section('content')
 
 <div class="col-md-10 col-md-offset-1 ">
-    <h1>공사계약 목록</h1>
-    
-{{--     <div id="the-basics">
-    
-        {!! Form::open( route('contract.search') )  !!}
-          <input class="typeahead no-clear search-typehead" type="text" placeholder="계약명" name="keyword">
-          <button type="submit">검색</button>
-        {!! form::close() !!}
-    </div> --}}
+    <h2>공사계약 목록</h2>
     <hr>
-    <table class="table table-condensed table-hover table-striped table-bordered table-condensed" id="datatable">
-<a class="btn btn-info" href="{{ route("contract.create") }}">계약추가</a>
+    <a class="btn btn-info" href="{{ route("contract.create") }}">계약추가</a>
+    <table class="table table-hover table-striped" id="DataTable">
+	
             <thead>
                 {{-- <th class="text-center">ID</th> --}}
                 <th class="text-center">계약번호</th>
@@ -30,6 +24,8 @@
                 <th class="text-center">국가</th>
                 <th class="text-center">첨부</th>
                 <th class="text-center">변경</th>
+                <th>변경횟수</th>
+                <th>보증서(건)</th>
             </thead>
             <tbody>
                 @foreach ($contracts as $contract) 
@@ -38,14 +34,15 @@
                         <td><a href="{{ route('contract.show', $contract->id) }}">{{ $contract->contractNo }}</a></td>
                         <td>{{ $contract->code }}</td>
                         <td>
-                            {{ mb_substr($contract->name, 0 , 60 ) }} 
-                            {{ (strlen($contract->name) > 60 ? " ..." : "") }}
+                        <span data-toggle="tooltip" title="{{ $contract->name }}" >
+                         {{--   {{ $contract->name }} --}}
+                            {{ mb_substr($contract->name, 0 , 100 ) }} 
+                            {{ (strlen($contract->name) > 100 ? " ..." : "") }}
+                        </span></p>
                         </td>
                         {{-- <td>{{$contract->code}}</td> --}}
-                        <td>{{$contract->date}}</td>
+                        <td><p>{{$contract->date}}</p></td>
                         <td>
-
-                       
                             <div style="text-align:left" class="col-md-3">
                             @foreach ( \App\Currency::where('id',$contract->cur1)->select('code')->get() as $currency)
                                 {{$currency->code}}
@@ -75,7 +72,7 @@
                                 {{ number_format((float)$contract->cAmount,2) }}
                             </div>
                         </td> --}}
-                        <td>
+                        <td data-toggle='tooltip' title="{{ $contract->contractor }}">
                             {{ mb_substr($contract->contractor,0, 10) }}
                             {{ strlen($contract->contractor) > 12 ? "..." : ""  }}
                         </td>
@@ -93,6 +90,11 @@
                         </td>
                         <td>
                             <a href="{{ route('contract.edit' , $contract->id ) }}"><span class="glyphicon glyphicon-edit"></span></a>
+                        </td>
+                        
+                        <td>{{ $count_bond }}</td>
+                        <td>
+                            <a href="{{ route('contract.show', $contract->id) }}">{{ count(App\Bond::where('contract_id',$contract->id)->get()) }} </a>
                         </td>
                     </tr>
                 @endforeach
@@ -120,8 +122,10 @@
 
 </div>
 
-@include('partials._javascript')
+@endsection
 
+
+@section('javascript')
 <script type="text/javascript">
 var substringMatcher = function(strs) {
   return function findMatches(q, cb) {
@@ -159,12 +163,18 @@ $('.typeahead').typeahead({
 });
 
 $(document).ready(function(){
-    $('#datatable').DataTable({
-        "language":{
-            "url":"//cdn.datatables.net/plug-ins/1.10.15/i18n/Korean.json"
-        },
+    $('#DataTable').DataTable({
         "order":[[3,"계약일자"]]
     });
 });
+
 </script>
+
+
+
+@endsection
+
+@section('customcss')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/datatable.css') }}">
 @endsection

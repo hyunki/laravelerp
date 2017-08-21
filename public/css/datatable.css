@@ -1,0 +1,11 @@
+table.dataTable td{
+	white-space: nowrap;
+}
+
+.dataTables_filter{
+	float: right;
+}
+
+input.form-control.input-sm{
+	width: 500px;
+}

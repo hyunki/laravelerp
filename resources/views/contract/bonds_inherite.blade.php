@@ -1,6 +1,3 @@
-<?php
-    $bonds = App\Contract::find($contract->id)->bonds;
-?>
 @if (count($bonds) > 0 )
 
     <h4>발행된 보증서</h4>
@@ -13,6 +10,8 @@
             <th colspan="2" style="text-align: center">보증금액</th>
             <th>발급일</th>
             <th>보증기간</th>
+            <th>회수</th>
+            <th>상태</th>
         </tr>
         @foreach( $bonds as $bond)
             <tr>
@@ -26,8 +25,17 @@
                 <td style="text-align: right">
                     {{ number_format((float) $bond->Amount ,2,'.',',')}}
                 </td>
-                <td>{{$bond->IssuingDate}}</td>
-                <td>{{$bond->StartingDate}} ~ {{$bond->EndingDate}}</td>
+                <td>
+                    {{ (!$bond->IssuingDate) ?'' :$bond->IssuingDate->format('Y-m-d')}}
+                </td>
+                <td>{{ $bond->StartingDate->format('Y-m-d')}} ~ {{$bond->EndingDate->format('Y-m-d')}}</td>
+                <td>
+                    @if($bond->Validity == 1)
+                        <span class="glyphicon glyphicon-ok" title="{{ $bond->RetrievalDate }}"></span>
+                    @endif
+                    {{ (!$bond->RetrievalDate) ? '' : $bond->RetrievalDate->format('Y-m-d') }}
+                </td>
+                <td>{{ $bond->status }}</td>
             </tr>
         @endforeach
     </table>

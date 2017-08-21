@@ -1,8 +1,7 @@
 @extends('layouts.main')
-@section('title','계약입력') {{-- yield --}}
 
 @section('content')
-
+@section('title','계약입력') {{-- yield --}}
 
 <div class="container">
 @include('partials._messages')
@@ -27,15 +26,9 @@
 
             <label>Scope :</label>
             <div class="form-group form-inline">
-                {!! Form::label('E', 'E', []) !!}
-                {!! Form::checkbox("E", 1, 0, []) !!}
-
-                {!! Form::label('P', 'P', []) !!}
-                {!! Form::checkbox("P", 1, 0, []) !!}
-
-                {!! Form::label('C', 'C', []) !!}
-                {!! Form::checkbox("C", 1, 0, []) !!}
-
+                <label for="E" class="form-control">E <input type="checkbox" name="e" id="E"></label>
+                <label for="P" class="form-control">P <input type="checkbox" name="p" id="P"></label>
+                <label for="C" class="form-control">C <input type="checkbox" name="c" id="C"></label>
             </div>
             <div class="form-group">
                 <div class="col-md-3">
@@ -44,7 +37,7 @@
                 </div>
                 <div class="col-md-3">
                     {{ Form::label('DeliveryDate_EP', 'EP 납기일') }}
-                    {{ Form::date('DeliveryDate_EP', null, array('class' => 'form-control', 'min'=>'2002-01-01', 'max' => '9999-09-09')) }}
+                    {{ Form::date('DeliveryDate_EP', 'null', array('class' => 'form-control', 'min'=>'2002-01-01', 'max' => '9999-09-09')) }}
                 </div>
                 <div class="col-md-3">
                     {{ Form::label('DeliveryDate_C', 'C 납기일') }}

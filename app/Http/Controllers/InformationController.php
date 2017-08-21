@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-use App\Insurance as Insurance;
-use App\Company as Company;
+use App\Information as information;
+
 use Session;
 
-class InsuranceController extends Controller
+class InformationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,19 +19,18 @@ class InsuranceController extends Controller
      */
     public function index()
     {
-        $data['insurances'] = Insurance::all();
-
-        return view('insurance.list', $data);        
+        $data['lists'] = Information::all();
+        return view('info.list')->with($data);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Responsep
      */
     public function create()
     {
-        return view('insurance.list');
+        //
     }
 
     /**

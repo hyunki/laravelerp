@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Contract as Contract;
 use App\Http\Requests;
-
-use App\Insurance as Insurance;
-use App\Company as Company;
 use Session;
+use DB;
+use App\Http\Helpers\Helper as Helper;
 
-class InsuranceController extends Controller
+class ContractAddendumController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,9 +18,6 @@ class InsuranceController extends Controller
      */
     public function index()
     {
-        $data['insurances'] = Insurance::all();
-
-        return view('insurance.list', $data);        
     }
 
     /**
@@ -31,7 +27,11 @@ class InsuranceController extends Controller
      */
     public function create()
     {
-        return view('insurance.list');
+        $data['contracts'] = \App\Contract::select(DB::raw('concat(id," | ",contractNo," | ", name) as userselect, id' ))->orderBy('id','desc')->lists('userselect', 'id');
+        $data['contractors'] = \App\Code::where('fieldName' , 'owner');
+        $data['countries'] = \App\Country::select(DB::raw('concat(alpha3," | ", nameKor) as userselect, id'))->orderBy('userselect')->lists('userselect', 'id');
+        $data['currencies'] = \App\Currency::select(DB::raw('concat(code, " | ", name) as userselect, id'))->orderBy('userselect')->lists('userselect', 'id');
+        return view('contract.addendum')->with($data);
     }
 
     /**
@@ -42,7 +42,8 @@ class InsuranceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $revised = new ContractAddendum;
+        $revised->revised_date = $request->revised_date;
     }
 
     /**
@@ -89,4 +90,7 @@ class InsuranceController extends Controller
     {
         //
     }
+
+
+
 }

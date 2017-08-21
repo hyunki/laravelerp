@@ -1,7 +1,5 @@
 @extends('layouts.main')
 
-
-
 @section('content')
 
     <div class="col-md-8 col-md-offset-2">
@@ -22,9 +20,14 @@
 
             <label>Scope :</label>
             <div class="form-group form-inline">
-                <label for="E" class="form-control">E <input type="checkbox" name="e" value="1" id="E"></label>
-                <label for="P" class="form-control">P <input type="checkbox" name="p" value="1" id="P"></label>
-                <label for="C" class="form-control">C <input type="checkbox" name="c" value="1" id="C"></label>
+                {!! Form::label('E', 'E', []) !!}
+                {!! Form::checkbox('E', 1, isset($contract->E) ? $contract->E['check'] : 0, []) !!}
+
+                {!! Form::label('P', 'P', []) !!}
+                {!! Form::checkbox('P', 1, isset($contract->P) ? $contract->E['check'] : 0, []) !!}
+
+                {!! Form::label('C', 'C', []) !!}
+                {!! Form::checkbox('C', 1, isset($contract->C) ? $contract->E['check'] : 0, []) !!}
             </div>
 
             {{ Form::label('date', '계약일자') }}

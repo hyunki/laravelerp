@@ -1,6 +1,6 @@
 <!-- app/views/contract/contract.blade.php -->
 @extends('layouts.main')
-
+@section('title', '지급보증 발급 목록')
 @section('content')
 
 
@@ -9,7 +9,7 @@
     <h1>지급보증 조회</h1>
     <a class="btn btn-info" href="{{ route("bond.create") }}">계약추가</a>
     <hr>
-    <table class="table table-condensed table-hover table-striped">
+    <table class="table table-condensed table-hover table-striped" id="DataTable">
 
             <thead>
                 <th class="text-center">ID</th>
@@ -73,19 +73,7 @@
                                 {{ number_format((float)$bond->Amount,2) }}
                             </div>
                         </td>
-                        {{-- <td> 수수료
-                            <div style="text-align:left" class="col-md-3">
-                                @if ($bond->FeeCurrency == '0')
-                                    {{ '' }}
-                                @else
-                                    {!! App\Currency::where('id',$bond->FeeCurrency)->get()['0']['code']!!}
-                                @endif
 
-                            </div>
-                            <div class="col-md-9" style="text-align:right;">
-                                {{ number_format((float)$bond->Fee,2) }}
-                            </div>
-                        </td> --}}
                         @if (!is_null($bond->IssuingDate))
                             <td>{{ $bond->IssuingDate->format('Y-m-d') }}</td>
                             @else <td></td>
@@ -103,6 +91,7 @@
                             @if($bond->Validity == 1)
                             <span class="glyphicon glyphicon-ok" title="{{ $bond->RetrievalDate }}"></span>
                             @endif
+
                         </td>
                         <td>{{$bond->status}}</td>
                         {{-- <td>{{$bond->Memo}}</td> --}}
@@ -123,4 +112,19 @@
     </div>
 
 </div>
+
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#DataTable').DataTable({
+        "order":[[13,"발행일"]]
+    });
+});
+</script>
+@endsection
+@section('customcss')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/datatable.css') }}">
 @endsection

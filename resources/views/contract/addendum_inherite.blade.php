@@ -1,36 +1,31 @@
-<?php
-    $bonds = App\Contract::find($contract->id)->bonds;
-?>
-@if (count($bonds) > 0 )
-
-    <h4>발행된 보증서</h4>
+@if (count($addendums) > 0)
+    <h4>계약수정내역</h4>
     <table class="table table-">
         <tr>
-            <th>발행기관</th>
-            <th>보증종목</th>
-            <th>보증종류</th>
-            <th>보증서번호</th>
-            <th colspan="2" style="text-align: center">보증금액</th>
-            <th>발급일</th>
-            <th>보증기간</th>
+            <th>변경코드</th>
+            <th>계약번호</th>
+            <th>계약명</th>
+            <th>시작일</th>
+            <th>종료일</th>
+            <th colspan="2" style="text-align: center">증감액</th>
+            <th>변경계약일</th>
+            <th>file</th>
+            <th>memo</th>
         </tr>
-        @foreach( $bonds as $bond)
+        @foreach( $addendums as $addendum)
             <tr>
-                <td>{{ $bond->Issuer }}</td>
-                <td>{{ $bond->Category }}</td>
-                <td>{{ $bond->Type }}</td>
-                <td><a href="{{ route('bond.show',$bond->id) }}">{{$bond->LgNumber}}</a></td>
-                <td>
-                    {{ App\Currency::where('id',$bond->BondCurrency)->get()['0']['code'] }}
-                </td>
-                <td style="text-align: right">
-                    {{ number_format((float) $bond->Amount ,2,'.',',')}}
-                </td>
-                <td>{{$bond->IssuingDate}}</td>
-                <td>{{$bond->StartingDate}} ~ {{$bond->EndingDate}}</td>
+                <td>{{ $addendum->type }}</td>
+                <td>{{ $addendum->revised_no }}</td>
+                <td>{{ $addendum->revised_name }}</td>
+                <td>{{ $addendum->revised_startdate }}</td>
+                <td>{{ $addendum->revised_enddate }}</td>
+                <td>{{ $addendum->currency }}{{ $addendum->amount }}</td>
+                <td>{{ $addendum->revised_date }}</td>
+                <td>{{ $addendum->file }}</td>
+                <td>{{ $addendum->memo }}</td>
             </tr>
         @endforeach
     </table>
 @else
-
+    <span></span>
 @endif

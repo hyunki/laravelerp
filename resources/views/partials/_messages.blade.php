@@ -15,6 +15,7 @@
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
+                <li>{{ print_r($_POST) }}</li>
             @endforeach
         </ul>
     </div>

@@ -5,7 +5,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contract extends Model
 {
-    protected $fillable = ['contractNo', 'name' , 'code', 'date', 'TotalAmount', 'epAmount', 'cAmount', 'contractor', 'owner', 'country','cur1', 'cur2', 'cur3' ,'file_name'];
+    protected $fillable = [
+        'contractNo',
+        'name' ,
+        'code',
+        'date',
+        'TotalAmount',
+        'epAmount',
+        'cAmount',
+        'contractor',
+        'owner',
+        'country',
+        'cur1',
+        'cur2',
+        'cur3' ,
+        'file_name',
+        'DeliveryDate_EP',
+        
+    ];
 
     public function curr1()
     {

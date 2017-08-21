@@ -23,6 +23,7 @@
                 <th>계약자</th>
                 <th>피보험자</th>
                 <th>변경내역보기</th>
+                <th>도구</th>
             </thead>
             <tbody>
                 @foreach ($insurances as $insurance) 
@@ -66,7 +67,6 @@
        </tbody>
     </table>
 
-{!! $insurances->links()  !!}
 
 </div>
 @endsection

@@ -9,22 +9,28 @@
     </div>
     <br>
     <div class="col-md-2">
-            <a class="btn btn-default"  href="{{ route('contract.edit' , $contract->id ) }}">수정</a>
-            <a class="btn btn-info"  href="{{ route('contract.create')}}">계속입력</a>
-            <a class="btn btn-danger" href="{{ route('contract.destroy', $contract->id ) }}">삭제</span></a>
-            <a class="btn btn-default" href="{{route('contract.index')}}" >목록</a>
-            <div>
-            <table>
-                <tr><th>입력일</th></tr>
-                <tr><td>{{$contract->created_at }} </td></tr>
-                <tr><th>수정일</th></tr>
-                <tr><td>{{$contract->updated_at }} </td></tr>
-            </table>
-            </div>
+        <div>
+        <table>
+            <tr><th>입력일</th></tr>
+            <tr><td>{{$contract->created_at }} </td></tr>
+            <tr><th>수정일</th></tr>
+            <tr><td>{{$contract->updated_at }} </td></tr>
+        </table>
+        <a href="{{route('contract.index')}}" class="btn btn-default btn-block" >목록</a>
+
+        <a href="{{ route('contract.create')}}" class="btn btn-info btn-block">계속입력</a>
+
+        <a href="{{ route('bond.create', ['contract_id' => $contract->id]) }}" class="btn btn-default btn-block">지급보증서등록</a>
+
+        <a href="{{ route('contractaddendum.create', ['contract_id' => $contract->id]) }}" class="btn btn-default btn-block">수정계약서등록</a>
+
+        <a href="{{ route('contract.edit' , $contract->id ) }}" class="btn btn-default btn-block"  >내용수정</a>
+
+        <a href="{{ route('contract.destroy', $contract->id ) }}" class="btn btn-danger btn-block" >계약삭제</span></a>
+        </div>
     </div>
     <div class="col-md-10">
         <h1>{{ $contract->name}}</h1>
-		<hr>
         <div class="form-group">
         <table class="table">
             <tr>
@@ -62,11 +68,11 @@
             </tr>
             <tr>
                 <th>EP납기일</th>
-                <td> {{ $contract->epCompletionDate }}</td>
+                <td> {{ $contract->DeliveryDate_EP }}</td>
             </tr>
             <tr>
                 <th>C납기일</th>
-                <td> {{ $contract->cCompletionDate }}</td>
+                <td> {{ $contract->DeliveryDate_C }}</td>
             </tr>
             <tr>
                 <th>계약금액</th>
@@ -111,7 +117,7 @@
             @if (is_null($contract->file_name))
                 <td>파일없음</td>
             @else
-                <td><a href="{{ $contract->file_name }}">다운로드</a> </td>
+                <td><a href="{{  asset( $contract->file_name) }}">다운로드</a> </td>
             @endif
             </tr>
             <tr>
@@ -123,11 +129,13 @@
             
         </table>
 
-        <a href="{{ route('bond.create', ['contract_id' => $contract->id]) }}" class="btn btn-default">지급보증서등록</a>
-        <a href="{{ route('bond.create', ['contract_id' => $contract->id]) }}" class="btn btn-default">수정계약서등록</a>
-        @include('contract.bonds_inherite')
+       
+        {{-- 계약수정 내역 보여줌 --}}
         @include('contract.addendum_inherite')
         {{-- 지급보증서 보여줌 --}}
+        @include('contract.bonds_inherite')
+        
+        
 
             </div>
              {{-- End of Form Group --}}

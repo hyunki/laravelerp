@@ -36,7 +36,6 @@ class BondController extends Controller
     public function create()
     {
         $data = $this->setdata();
-       
 
         return view('bond.create')->with($data);
     }
@@ -67,24 +66,40 @@ class BondController extends Controller
         $bond->LgNumber = $request->LgNumber;
         $bond->Type = $request->Type;
         $bond->BondCurrency = $request->BondCurrency;
-        $bond->Amount = $request->Amount;
+        $bond->Amount = str_replace( ',', '', $request->Amount);
         $bond->FeeCurrency = $request->FeeCurrency;
-        $bond->Fee = $request->Fee;
+        $bond->Fee = str_replace( ',', '', $request->Fee);
         $bond->IssuingDate = $request->IssuingDate;
         $bond->StartingDate = $request->StartingDate;
         $bond->EndingDate = $request->EndingDate;
-        $bond->RetrievalDate = $request->RetrievalDate;
+        
         $bond->Status = $request->Status;
-        $bond->Validity = $request->Validity;
-        $bond->Memo = $request->Memo;
-
+        
+        if ($request->RetrievalDate == null)
+        {
+            $bond->RetrievalDate = null;
+        }
+        else
+        {
+            $bond->RetrievalDate = $request->RetrievalDate;
+        }
+        
+        if ($request->Validity == null) {
+            $bond->Validity = 0;
+        }else{
+            $bond->Validity = 1;    
+        }
+        
+        
+        $bond->memo = $request->memo;
+        
 
         $bond->save();
 
         Session::flash('success', '정상적으로 등록하였습니다.');
 
         //return redirect()->route('bond.show', $bond->id);
-        return redirect()->route('bond.index');    
+        return redirect()->route('bond.show', $bond->id);    
     }
 
     /**
@@ -134,16 +149,49 @@ class BondController extends Controller
         $bond->LgNumber = $request->LgNumber;
         $bond->Type = $request->Type;
         $bond->BondCurrency = $request->BondCurrency;
-        $bond->Amount = $request->Amount;
+        $bond->Amount = str_replace( ',', '', $request->Amount);
         $bond->FeeCurrency = $request->FeeCurrency;
-        $bond->Fee = $request->Fee;
-        $bond->IssuingDate = $request->IssuingDate;
+        $bond->Fee = str_replace( ',', '', $request->Fee);
+
+        if ($request->IssuingDate == '' or null) {
+            $bond->IssuingDate = null;
+        }else
+        {
+            $bond->IssuingDate = $request->IssuingDate;
+        }
+        
+        
         $bond->StartingDate = $request->StartingDate;
         $bond->EndingDate = $request->EndingDate;
-        $bond->RetrievalDate = $request->RetrievalDate;
-        $bond->Status = $request->Status;
+        
+
+        if ($request->RetrievalDate == null) {
+            $bond->RetrievalDate = null;
+
+            if ($request->RetrievalDate == '')
+            {
+            $bond->RetrievalDate = null;
+            }
+        }
+        else
+        {
+            $bond->RetrievalDate = $request->RetrievalDate;
+        }
+       
         $bond->Validity = $request->Validity;
-        $bond->Memo = $request->Memo;
+        // if ($request->RetrievalDate == '') {
+        //     $bond->RetrievalDate = null;
+        //     $bond->Validity = 0;
+        // }else
+        // {
+        //     $bond->RetrievalDate = $request->RetrievalDate;
+        //     $bond->Validity = 1;
+        // }
+
+
+        $bond->Status = $request->Status;
+
+        $bond->memo = $request->memo;
         
         $bond->update();
 
@@ -172,8 +220,19 @@ class BondController extends Controller
             ->orderBy('userselect')
             ->lists('userselect', 'id');
         $data['contracts'] = \App\Contract::select(DB::raw('concat(id," | ",contractNo," | ", name) as userselect, id' ))->orderBy('id','desc')->lists('userselect', 'id');
-
+        $data['format'] = ['은행표준양식' =>'은행표준양식','수익자지정양식'=>'수익자지정양식','기타'=>'기타'];
+        $data['category'] = ['지급보증' => '지급보증', '신용장' => '신용장', '보증보험' => '보증보험', '복보증' => '복보증'];
+        $data['type'] = ['Advance' => 'Advance','Performance' => 'Performance', 'Warranty' => 'Warranty', 'Maintenance' => 'Maintenance','Retension' => 'Retension','Interim' => 'Interim', 'Demand'=>'Demand'];
         return $data;
+    }
+
+    public function uploadFiles($request)
+    {
+        $request->files ;
+        $files = count($this->input('files'));
+        foreach (range(0, $files) as $index) {
+            # code...
+        }
     }
 
 }
