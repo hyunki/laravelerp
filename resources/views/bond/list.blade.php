@@ -22,6 +22,7 @@
                 <th class="text-center">Mail</th>
                 <th class="text-center">수익자</th>
                 <th class="text-center">보증서번호</th>
+                <th></th>
                 <th class="text-center">보증금액</th>
                 {{-- <th class="text-center">수수료</th> --}}
                 <th class="text-center">발행일</th>
@@ -62,16 +63,15 @@
                         
                         {{-- 보증금 --}}
                         <td> 
-                            <div style="text-align:left" class="col-md-3">
-                                @if ($bond->BondCurrency == '0')
-                                    {{ '' }}
-                                @else
-                                    {!! App\Currency::where('id',$bond->BondCurrency)->get()['0']['code']!!}
-                                @endif
-                            </div>
-                            <div class="col-md-9" style="text-align:right;">
-                                {{ number_format((float)$bond->Amount,2) }}
-                            </div>
+                            @if ($bond->BondCurrency == '0')
+                                {{ '' }}
+                            @else
+
+                                {!! App\Currency::where('id',$bond->BondCurrency)->get()['0']['code']!!}
+                            @endif
+                        </td>
+                        <td style="text-align: right;">
+                            {{ number_format((float)$bond->Amount,2) }}
                         </td>
 
                         @if (!is_null($bond->IssuingDate))

@@ -44,7 +44,7 @@ class ContractController extends Controller
     {
         $data['contract'] = Contract::find($id);
 
-        $data['addendums'] = ContractsAddendum::where('contract_id','=',$id)->get();
+        $data['addendums'] = ContractsAddendum::where('contract_id','=',$id)->orderBy('revised_date','ASC')->get();
 
         $data['bonds'] = Bond::where('contract_id',$id)
                                 ->orderBy('IssuingDate','ASC')

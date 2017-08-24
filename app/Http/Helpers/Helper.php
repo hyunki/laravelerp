@@ -38,6 +38,7 @@ class Helper
         return $model_array;
     }
 
+
     public static function companyList()
     {
         $company_list = array('0' => trans('general.select_company')) + DB::table('companies')

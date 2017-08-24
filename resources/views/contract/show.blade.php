@@ -75,19 +75,20 @@
                 <td> {{ $contract->DeliveryDate_C }}</td>
             </tr>
             <tr>
-                <th>계약금액</th>
-                <td>
-                    {{ $contract->curr1['code']}} {{ number_format((float) $contract->TotalAmount,2,'.',',') }} 
-                </td>
-            </tr>
-            <tr>
                 <th>EP금액</th>
                 <td>{{ $contract->curr2['code']}} {{ $ep = number_format((float)$contract->epAmount,2,'.',',') }} </td>
                 {{-- 2번 불러오는게 안됨  --}}
             </tr>
             <tr>
                 <th>C 금액</th>
-                <td>{{ $contract->curr3['code']}} {{ $c = number_format((float)$contract->cAmount,2,'.',',') }} </td>
+                <td>{{ $contract->curr3['code']}} {{ $c = number_format((float)$contract->cAmount,2,'.',',') }} 
+            </td>
+            <tr>
+                <th>계약금액</th>
+                <td><b>
+                    {{ $contract->curr1['code']}} {{ number_format((float) $contract->TotalAmount,2,'.',',') }} 
+                </b></td>
+            </tr>
 
             </tr>
             <tr>

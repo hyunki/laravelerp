@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Contract as Contract;
+use App\ContractsAddendum as ContractsAddendum;
 use App\Http\Requests;
 use Session;
 use DB;
@@ -31,6 +31,7 @@ class ContractAddendumController extends Controller
         $data['contractors'] = \App\Code::where('fieldName' , 'owner');
         $data['countries'] = \App\Country::select(DB::raw('concat(alpha3," | ", nameKor) as userselect, id'))->orderBy('userselect')->lists('userselect', 'id');
         $data['currencies'] = \App\Currency::select(DB::raw('concat(code, " | ", name) as userselect, id'))->orderBy('userselect')->lists('userselect', 'id');
+        $data['addendum_type'] = ['1'=>'계약금액','2'=>'계약기간','3'=>'금액및기간','4'=>'기타'];
         return view('contract.addendum')->with($data);
     }
 
@@ -42,8 +43,41 @@ class ContractAddendumController extends Controller
      */
     public function store(Request $request)
     {
-        $revised = new ContractAddendum;
-        $revised->revised_date = $request->revised_date;
+
+        $revised = new ContractsAddendum;
+        
+        $revised->contract_id = $request->contract_id;
+        $revised->type = $request->type;
+        $revised->revised_name = $request->revised_name;
+        $revised->revised_no = $request->revised_no;
+        if($request->revised_date == ''){
+            $revised->revised_date = '';
+        }else{
+            $revised->revised_date = $request->revised_date;    
+        }
+        if($request->revised_startdate == ''){
+            $revised->revised_startdate = NULL;
+        }else{
+            $revised->revised_startdate = $request->revised_startdate;    
+        }
+        if($request->revised_enddate == ''){
+            $revised->revised_enddate = NULL;
+        }else{
+            $revised->revised_enddate = $request->revised_enddate;    
+        }
+
+        if ($request->amount == '') {
+            $revised->amount = null;
+        }else{
+             $revised->amount = $request->amount;
+        }
+        $revised->currency = $request->currency;
+        
+        $revised->memo = $request->input('memo');
+        $revised->save();
+        return redirect()->route('contract.show', $request->contract_id);
+
+
     }
 
     /**
@@ -54,7 +88,7 @@ class ContractAddendumController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('contract.addendum')->with($data);
     }
 
     /**
@@ -65,8 +99,13 @@ class ContractAddendumController extends Controller
      */
     public function edit($id)
     {
-        //
-    }
+        $data['addendum'] = ContractsAddendum::find($id);
+        $data['contracts'] = \App\Contract::select(DB::raw('concat(id," | ",contractNo," | ", name) as userselect, id' ))->orderBy('id','desc')->lists('userselect', 'id');
+        $data['contractors'] = \App\Code::where('fieldName' , 'owner');
+        $data['countries'] = \App\Country::select(DB::raw('concat(alpha3," | ", nameKor) as userselect, id'))->orderBy('userselect')->lists('userselect', 'id');
+        $data['currencies'] = \App\Currency::select(DB::raw('concat(code, " | ", name) as userselect, id'))->orderBy('userselect')->lists('userselect', 'id');
+        $data['addendum_type'] = ['1'=>'계약금액','2'=>'계약기간','3'=>'금액및기간','4'=>'기타'];
+        return view('contract/addendum_edit')->with($data);    }
 
     /**
      * Update the specified resource in storage.
@@ -77,7 +116,40 @@ class ContractAddendumController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $revised = ContractsAddendum::find($id);
+        
+        // $revised->contract_id = $request->contract_id;
+        $revised->contract_id = $request->contract_id;
+        $revised->type = $request->type;
+        $revised->revised_name = $request->revised_name;
+        $revised->revised_no = $request->revised_no;
+        if($request->revised_date == ''){
+            $revised->revised_date = '';
+        }else{
+            $revised->revised_date = $request->revised_date;    
+        }
+        if($request->revised_startdate == ''){
+            $revised->revised_startdate = NULL;
+        }else{
+            $revised->revised_startdate = $request->revised_startdate;    
+        }
+        if($request->revised_enddate == ''){
+            $revised->revised_enddate = NULL;
+        }else{
+            $revised->revised_enddate = $request->revised_enddate;    
+        }
+
+        if ($request->amount == null) {
+            $revised->amount = null;
+        }else{
+             $revised->amount = $request->amount;
+        }
+        $revised->currency = $request->currency;
+        
+        $revised->memo = $request->memo;
+        $revised->save();
+        return redirect()->route('contract.show', $request->contract_id);
+
     }
 
     /**

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Asset as Asset;
 use App\Http\Helpers\Helper as Helper;
 
 class AssetController extends Controller
@@ -13,7 +14,8 @@ class AssetController extends Controller
      */
     public function index()
     {
-        return view('asset/list');
+    	$data['assets'] = Helper::assetsList();
+        return view('asset.list')->with($data);
     }
 
     /**

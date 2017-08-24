@@ -42,10 +42,6 @@
             {{ Form::label('DeliveryDate_C', 'C 납기일') }}
             {{ Form::date('DeliveryDate_C', null, array('class' => 'form-control', 'max' => '9999-12-31')) }}
 
-            {{ Form::label('TotalAmount', '계약금액') }}
-            {{ Form::select('cur1', $currencies , null ,array('class' => 'form-control', 'placeholder' => '통화')) }}
-            {{ Form::text('TotalAmount', null, array('class' => 'form-control', 'placeholder' => '계약금액')) }}
-
             {{ Form::label('epAmount', 'EP금액') }}
             {{ Form::select('cur2',$currencies, null, array('class' => 'form-control', 'placeholder' => '통화')) }}
             {{ Form::text('epAmount', null, array('class' => 'form-control', 'placeholder' => 'EP금액')) }}
@@ -53,6 +49,10 @@
             {{ Form::label('cAmount', 'C금액') }}
             {{ Form::select('cur3',$currencies, null, array('class' => 'form-control', 'placeholder' => '통화')) }}
             {{ Form::text('cAmount', null, array('class' => 'form-control', 'placeholder' => 'C금액')) }}
+
+            {{ Form::label('TotalAmount', '계약금액') }}
+            {{ Form::select('cur1', $currencies , null ,array('class' => 'form-control', 'placeholder' => '통화')) }}
+            {{ Form::text('TotalAmount', null, array('class' => 'form-control', 'placeholder' => '계약금액')) }}
 
             {{ Form::label('contractor', '발주처') }}
             {{ Form::text('contractor', null, array('class' => 'form-control', 'placeholder' => '발주처')) }}

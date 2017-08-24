@@ -92,9 +92,9 @@
                             <a href="{{ route('contract.edit' , $contract->id ) }}"><span class="glyphicon glyphicon-edit"></span></a>
                         </td>
                         
-                        <td>{{ $count_bond }}</td>
+                        <td>{{ count($contract->ContractsAddendum) }}</td>
                         <td>
-                            <a href="{{ route('contract.show', $contract->id) }}">{{ count(App\Bond::where('contract_id',$contract->id)->get()) }} </a>
+                            <a href="{{ route('contract.show', $contract->id) }}">{{ count($contract->bonds) }} </a>
                         </td>
                     </tr>
                 @endforeach

@@ -63,8 +63,8 @@ class Contract extends Model
         
     }
 
-    public function ContractAddendum()
+    public function ContractsAddendum()
     {
-        return $this->hasMany('App\ContractAddendum');
+        return $this->hasMany('App\ContractsAddendum');
     }
 }

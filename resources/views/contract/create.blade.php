@@ -57,12 +57,6 @@
             </div>
 
             <div class="c form-group">
-               {{ Form::label('TotalAmount', '계약금액') }}
-                <div class="form-group form-inline">
-                    {{ Form::select('cur1', $currencies , null ,array('class' => 'form-control dropdown', 'placeholder' => '통화선택')) }}
-                    {{ Form::text('TotalAmount', null, array('class' => 'form-control', 'placeholder' => '계약금액')) }}
-                 </div>
-                
                 {{ Form::label('epAmount', 'EP금액') }}
                 <div class="form-group form-inline">
                     {{ Form::select('cur2',$currencies, null, array('class' => 'form-control', 'placeholder' => '통화선택')) }}
@@ -73,7 +67,11 @@
                     {{ Form::select('cur3',$currencies, null, array('class' => 'form-control', 'placeholder' => '통화선택')) }}
                     {{ Form::text('cAmount', null, array('class' => 'form-control', 'placeholder' => 'C금액')) }}
                 </div>
-
+               {{ Form::label('TotalAmount', '계약금액') }}
+                <div class="form-group form-inline">
+                    {{ Form::select('cur1', $currencies , null ,array('class' => 'form-control dropdown', 'placeholder' => '통화선택')) }}
+                    {{ Form::text('TotalAmount', null, array('class' => 'form-control', 'placeholder' => '계약금액')) }}
+                 </div>
             </div>
     
             {{ Form::label('contractor', '발주처') }}
