@@ -83,13 +83,33 @@
 		                <th>C 금액</th>
 		                <td>{{ $contract->curr3['code']}} {{ $c = number_format((float)$contract->cAmount,2,'.',',') }} 
 		            </td>
+		            
 		            <tr>
 		                <th>계약금액</th>
 		                <td><b>
 		                    {{ $contract->curr1['code']}} {{ number_format((float) $contract->TotalAmount,2,'.',',') }} 
+
 		                </b></td>
 		            </tr>
-
+					<tr>
+		            	<th>
+		            		변경계약금액 합계
+		            	</th>
+		            	<td>
+		            		{{ $contract->curr1['code'] }}
+		            		 {{ number_format($amendedamount,2,'.',',') }}
+		            	</td>
+		            </tr>
+		            <tr>
+		            	<th>
+		            		총계약금액
+		            	</th>
+		            	<td>
+		            		<b>
+		                    {{ $contract->curr1['code'] }} {{ number_format($totalamount,2,'.',',') }}
+		                    </b>
+		            	</td>
+		            </tr>
 		            </tr>
 		            <tr>
 		                <th>발주처</th>
