@@ -252,6 +252,10 @@ class ContractController extends Controller
         return redirect()->route('contract.list');
     }
 
+    public function resize()
+    {
+        ini_set('memory_limit', '1024M');
+    }
 
 
 
