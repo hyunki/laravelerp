@@ -101,12 +101,4 @@ class Helper
         $employee_list = Employee::orderBy('')->get();
     }
 
-    public static function file_size_path($path)
-    {
-    $size = filesize($path);
-    $units = array( 'bytes', 'Kb', 'Mb', 'Gb', 'Tb', 'Pb', 'Eb', 'Zb', 'Yb');
-    $power = $size > 0 ? floor(log($size, 1024)) : 0;
-    return number_format($size / pow(1024, $power), 2, '.', ',') . ' ' . $units[$power];
-    }
-// {{ filesize(public_path($contract->file_name))/2048 ." Mb" }}
 }
