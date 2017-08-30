@@ -29,105 +29,6 @@
         <a href="{{ route('contract.destroy', $contract->id ) }}" class="btn btn-danger btn-block" >계약삭제</span></a>
         </div>
     </div>
-<<<<<<< HEAD
-    <div class="col-md-10">
-        <h1>{{ $contract->name}}</h1>
-        <div class="form-group">
-        <table class="table">
-            <tr>
-                <th>계약서 ID</th>
-                <td> {{ $contract->id }}</td>
-            </tr>
-            <tr>
-                <th>계약서 번호</th>
-                <td> {{ $contract->contractNo }}</td>
-            </tr>
-            <tr>
-                <th>공사코드</th>
-                <td> {{ $contract->code }}</td>
-            </tr>
-            <tr>
-                <th>Scope</th>
-                <td>
-                    @if( $contract->E == 1)
-                    E
-                    @endif
-                    @if( $contract->P == 1)
-                    P
-                    @endif
-                    @if( $contract->C == 1)
-                    C
-                    @endif
-            </tr>
-            <tr>
-                <th>공사계약일</th>
-                <td> {{ $contract->date }}</td>
-            </tr>
-            <tr>
-                <th>공사완료일</th>
-                <td>{{ $contract->completionDate }}</td>
-            </tr>
-            <tr>
-                <th>EP납기일</th>
-                <td> {{ $contract->DeliveryDate_EP }}</td>
-            </tr>
-            <tr>
-                <th>C납기일</th>
-                <td> {{ $contract->DeliveryDate_C }}</td>
-            </tr>
-            <tr>
-                <th>EP금액</th>
-                <td>{{ $contract->curr2['code']}} {{ $ep = number_format((float)$contract->epAmount,2,'.',',') }} </td>
-                {{-- 2번 불러오는게 안됨  --}}
-            </tr>
-            <tr>
-                <th>C 금액</th>
-                <td>{{ $contract->curr3['code']}} {{ $c = number_format((float)$contract->cAmount,2,'.',',') }} 
-            </td>
-            <tr>
-                <th>계약금액</th>
-                <td><b>
-                    {{ $contract->curr1['code']}} {{ number_format((float) $contract->TotalAmount,2,'.',',') }} 
-                </b></td>
-            </tr>
-
-            </tr>
-            <tr>
-                <th>발주처</th>
-                <td>{{$contract->contractor }} </td>
-            </tr>
-            <tr>
-                <th>발주국</th>
-                <td>
-                    @foreach( \App\Country::where('id' , $contract->country)->get() as $country)
-                        {{ $country->alpha3 }}  ( {{$country->nameKor}} )
-                    @endforeach
-                </td>
-            </tr>
-            <tr>
-                <th>사업주</th>
-                <td>{{$contract->owner }} </td>
-            </tr>
-            <tr>
-                <th>PM</th>
-                <td>{{$contract->pic }} </td>
-            </tr>
-            
-           
-            <tr>
-                <th>계약서</th>
-            @if (is_null($contract->file_name))
-                <td>파일없음</td>
-            @else
-                <td><a href="{{  asset( $contract->file_name) }}">다운로드</a> </td>
-            @endif
-            </tr>
-            <tr>
-                <th >Memo</th>
-                 <td colspan="2">{!! $contract->memo !!}</td>
-            </tr>
-=======
-    {{-- end of col-md-2 --}}
     <div class="col-md-10 a4">
     	<div class="print">
 	        <h1>{{ $contract->name}}</h1>
@@ -248,10 +149,7 @@
 		                <th >Memo</th>
 		                 <td colspan="2">{!! $contract->memo !!}</td>
 		            </tr>
->>>>>>> 198a5fcd102acdd33bdd06707f0fd6a40f7d400a
 
-            
-            
         </table>
 
        

@@ -18,24 +18,20 @@
 
 use Illuminate\Http\Request;
 
-Route::group(['middleware' => 'web'], function () {
-	Route::auth();
-	
-	Route::get('/logout',function(){
-    	Auth::logout();
-    	return redirect('/');
-	});
-
 	Route::get('/', function(){
 		return view('welcome');
 	});
+	// Route::get('/login', function()	{
+	// 	return view('auth.login');
+	// });
+
+	Route::get('/login', 'HomeController@index');
+	Route::post('/login', 'Auth\AuthController@login');
+	Route::get('/logout', 'Auth\AuthController@logout');
+Route::group(['middleware' => 'auth'], function () {
 
 // Contract Route
 	Route::resource('contract', 'ContractController');
-	Route::get('/search', [
-	    'as' => 'api.search',
-	    'uses' => 'ContractController@search'
-	]);
 
 // Contract addendum route
 	Route::resource('contractaddendum', 'ContractAddendumController');
