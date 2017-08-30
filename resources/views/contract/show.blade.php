@@ -139,8 +139,8 @@
 		                <td>파일없음</td>
 		            @else
 		                <td>
-		                	<a href="{{  asset( $contract->file_name) }} ">다운로드</a>
-		                	{{ Helper::file_size_path(public_path($contract->file_name)) }}
+		                	<a href="{{ asset( $contract->file_name) }} ">다운로드</a>
+		                	{{ Helper::file_size_path($contract->file_name) }}
 	                	</td>
 		            @endif
 		            </tr>

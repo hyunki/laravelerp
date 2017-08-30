@@ -14,27 +14,32 @@
         </tr>
         @foreach( $bonds as $bond)
             <tr>
-                <td>{{ $bond->Issuer }}</td>
-                <td>{{ $bond->Category }}</td>
-                <td>{{ $bond->Type }}</td>
-                <td><a href="{{ route('bond.show',$bond->id) }}">{{$bond->LgNumber}}</a></td>
+                <td>{!! $bond->Issuer !!}</td>
+                <td>{!! $bond->Category !!}</td>
+                <td>{!! $bond->Type !!}</td>
                 <td>
-                    {{ App\Currency::where('id',$bond->BondCurrency)->get()['0']['code'] }}
+                    <a href="{!! route('bond.show',$bond->id) !!}" class="hidden-print">
+                        {{ $bond->LgNumber }}
+                    </a>
+                    <p style="display: none">{{ $bond->LgNumber }}</p>
+                </td>
+                <td>
+                    {!! App\Currency::where('id',$bond->BondCurrency)->get()['0']['code'] !!}
                 </td>
                 <td style="text-align: right">
-                    {{ number_format((float) $bond->Amount ,2,'.',',')}}
+                    {!! number_format((float) $bond->Amount ,2,'.',',')!!}
                 </td>
                 <td>
-                    {{ (!$bond->IssuingDate) ?'' :$bond->IssuingDate->format('Y-m-d')}}
+                    {!! (!$bond->IssuingDate) ?'' :$bond->IssuingDate->format('Y-m-d')!!}
                 </td>
-                <td>{{ $bond->StartingDate->format('Y-m-d')}} ~ {{$bond->EndingDate->format('Y-m-d')}}</td>
+                <td>{!! $bond->StartingDate->format('Y-m-d')!!} ~ {!!$bond->EndingDate->format('Y-m-d')!!}</td>
                 <td>
                     @if($bond->Validity == 1)
-                        <span class="glyphicon glyphicon-ok" title="{{ $bond->RetrievalDate }}"></span>
+                        <span class="glyphicon glyphicon-ok" title="{!! $bond->RetrievalDate !!}"></span>
                     @endif
-                    {{ (!$bond->RetrievalDate) ? '' : $bond->RetrievalDate->format('Y-m-d') }}
+                    {!! (!$bond->RetrievalDate) ? '' : $bond->RetrievalDate->format('Y-m-d') !!}
                 </td>
-                <td>{{ $bond->status }}</td>
+                <td>{!! $bond->status !!}</td>
             </tr>
         @endforeach
     </table>
