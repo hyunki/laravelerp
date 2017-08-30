@@ -50,6 +50,9 @@ class ContractController extends Controller
                                 ->orderBy('IssuingDate','ASC')
                                 ->orderBy('Type','ASC')
                                 ->get();
+        $data['amendedamount'] = ContractsAddendum::where('contract_id',$id)
+        ->sum('amount');
+        $data['totalamount'] = $data['amendedamount']+$data['contract']['TotalAmount'];
 
         $data['countries'] = \App\Country::select(DB::raw('concat(alpha3," | ", nameKor) as userselect, id'))->orderBy('userselect')->lists('userselect', 'id');
         return view('contract.show')->with($data);

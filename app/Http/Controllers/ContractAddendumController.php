@@ -88,6 +88,8 @@ class ContractAddendumController extends Controller
      */
     public function show($id)
     {
+        $data['amendedamount'] = ContractsAddendum::where('contract_id',$id)
+        ->sum('amount');
         return view('contract.addendum')->with($data);
     }
 
